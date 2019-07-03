@@ -2,12 +2,24 @@ package aldoutil
 
 import (
 	"bytes"
+	"database/sql"
 	"reflect"
 	"strings"
 	"time"
 
 	"github.com/douglasmg7/money"
 )
+
+var db *sql.DB
+
+// func SetDb(dataBase *sql.DB) error {
+// db = dataBase
+// err := db.Ping()
+// if err != nil {
+// return err
+// }
+// return nil
+// }
 
 type Product struct {
 	Id                   int         `db:"id"`
@@ -36,17 +48,17 @@ type Product struct {
 }
 
 // FindByCode get product from db by code.
-func (p *Product) FindByCode(code string) error {
-	return p.findByCode(code, false)
+func (p *Product) FindByCode(db *sql.DB, code string) error {
+	return p.findByCode(db, code, false)
 }
 
 // FindHistoryByCode get product history from db by code.
-func (p *Product) FindHistoryByCode(code string) error {
-	return p.findByCode(code, true)
+func (p *Product) FindHistoryByCode(db *sql.DB, code string) error {
+	return p.findByCode(db, code, true)
 }
 
 // findByCode get product or product history from db by code.
-func (p *Product) findByCode(code string, history bool) error {
+func (p *Product) findByCode(db *sql.DB, code string, history bool) error {
 	var fieldsName []string
 	var fieldsNameDb []string
 	var fieldsInterface []interface{}
@@ -75,17 +87,17 @@ func (p *Product) findByCode(code string, history bool) error {
 }
 
 // Save product to db.
-func (p *Product) Save() error {
-	return p.save(false)
+func (p *Product) Save(db *sql.DB) error {
+	return p.save(db, false)
 }
 
 // Save product history to db.
-func (p *Product) SaveHistory() error {
-	return p.save(true)
+func (p *Product) SaveHistory(db *sql.DB) error {
+	return p.save(db, true)
 }
 
 // Save  product or product history to db.
-func (p *Product) save(history bool) error {
+func (p *Product) save(db *sql.DB, history bool) error {
 	var fieldsName []string
 	var fieldsNameDb []string
 	var fieldsInterface []interface{}
@@ -122,17 +134,17 @@ func (p *Product) save(history bool) error {
 }
 
 // Update product from db.
-func (p *Product) Update() error {
-	return p.update(false)
+func (p *Product) Update(db *sql.DB) error {
+	return p.update(db, false)
 }
 
 // UpdateHistory update product history db.
-func (p *Product) UpdateHistory() error {
-	return p.update(true)
+func (p *Product) UpdateHistory(db *sql.DB) error {
+	return p.update(db, true)
 }
 
 // Update product or product history db.
-func (p *Product) update(history bool) error {
+func (p *Product) update(db *sql.DB, history bool) error {
 	var fieldsNameSet []string
 	// var fieldsNameDb []string
 	var fieldsInterface []interface{}
