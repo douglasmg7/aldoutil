@@ -86,6 +86,60 @@ func (p *Product) findByCode(db *sql.DB, code string, history bool) error {
 	return err
 }
 
+func FindAllProducts(db *sql.DB) ([]Product, error) {
+	return findAllProducts(db, false)
+}
+
+func FindAllProductsHistory(db *sql.DB) ([]Product, error) {
+	return findAllProducts(db, true)
+}
+
+func findAllProducts(db *sql.DB, history bool) (products []Product, err error) {
+	p := &Product{}
+	var fieldsName []string
+	var fieldsNameDb []string
+	var fieldsInterface []interface{}
+	// Table name.
+	var tableName = "product"
+	if history {
+		tableName = "product_history"
+	}
+
+	val := reflect.ValueOf(p).Elem()
+	for i := 0; i < val.NumField(); i++ {
+		fieldType := val.Type().Field(i)
+		fieldsName = append(fieldsName, fieldType.Name)
+		fieldsNameDb = append(fieldsNameDb, fieldType.Tag.Get("db"))
+		fieldsInterface = append(fieldsInterface, val.Field(i).Addr().Interface())
+	}
+	var buffer bytes.Buffer
+	buffer.WriteString("SELECT ")
+	buffer.WriteString(strings.Join(fieldsNameDb, ", "))
+	buffer.WriteString(" FROM ")
+	buffer.WriteString(tableName)
+	buffer.WriteString(" LIMIT 10")
+
+	rows, err := db.Query(buffer.String())
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+	for rows.Next() {
+		product := Product{}
+		fieldsInterfaceRes := []interface{}{}
+		val := reflect.ValueOf(product).Elem()
+		for i := 0; i < val.NumField(); i++ {
+			fieldsInterfaceRes = append(fieldsInterfaceRes, val.Field(i).Addr().Interface())
+		}
+		err = rows.Scan(fieldsInterface...)
+		if err != nil {
+			return
+		}
+		products = append(products, product)
+	}
+	return
+}
+
 // Save product to db.
 func (p *Product) Save(db *sql.DB) error {
 	return p.save(db, false)
