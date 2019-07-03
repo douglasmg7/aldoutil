@@ -1,0 +1,1 @@
+Remove money, and use currency *100 on db.
