@@ -6,8 +6,6 @@ import (
 	"reflect"
 	"strings"
 	"time"
-
-	"github.com/douglasmg7/money"
 )
 
 var db *sql.DB
@@ -22,29 +20,29 @@ var db *sql.DB
 // }
 
 type Product struct {
-	Id                   int         `db:"id"`
-	Code                 string      `db:"code"`
-	Brand                string      `db:"brand"`
-	Category             string      `db:"category"`
-	Description          string      `db:"description"`
-	Unit                 string      `db:"unit"`
-	Multiple             int         `db:"multiple"`
-	DealerPrice          money.Money `db:"dealer_price"`
-	SuggestionPrice      money.Money `db:"suggestion_price"`
-	TechnicalDescription string      `db:"technical_description"`
-	Availability         bool        `db:"availability"`
-	Length               int         `db:"length"` // mm.
-	Width                int         `db:"width"`  // mm.
-	Height               int         `db:"height"` // mm.
-	Weight               int         `db:"weight"` // grams.
-	PictureLink          string      `db:"picture_link"`
-	WarrantyPeriod       int         `db:"warranty_period"` // Days.
-	RMAProcedure         string      `db:"rma_procedure"`
-	CreatedAt            time.Time   `db:"created_at"`
-	ChangedAt            time.Time   `db:"changed_at"`
-	Changed              bool        `db:"changed"`
-	New                  bool        `db:"new"`
-	Removed              bool        `db:"removed"`
+	Id                   int       `db:"id"`
+	Code                 string    `db:"code"`
+	Brand                string    `db:"brand"`
+	Category             string    `db:"category"`
+	Description          string    `db:"description"`
+	Unit                 string    `db:"unit"`
+	Multiple             int       `db:"multiple"`
+	DealerPrice          int       `db:"dealer_price"`
+	SuggestionPrice      int       `db:"suggestion_price"`
+	TechnicalDescription string    `db:"technical_description"`
+	Availability         bool      `db:"availability"`
+	Length               int       `db:"length"` // mm.
+	Width                int       `db:"width"`  // mm.
+	Height               int       `db:"height"` // mm.
+	Weight               int       `db:"weight"` // grams.
+	PictureLink          string    `db:"picture_link"`
+	WarrantyPeriod       int       `db:"warranty_period"` // Days.
+	RMAProcedure         string    `db:"rma_procedure"`
+	CreatedAt            time.Time `db:"created_at"`
+	ChangedAt            time.Time `db:"changed_at"`
+	Changed              bool      `db:"changed"`
+	New                  bool      `db:"new"`
+	Removed              bool      `db:"removed"`
 }
 
 // FindByCode get product from db by code.
