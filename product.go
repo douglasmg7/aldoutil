@@ -43,6 +43,7 @@ type Product struct {
 	Changed              bool      `db:"changed"`
 	New                  bool      `db:"new"`
 	Removed              bool      `db:"removed"`
+	StoreProductId       bool      `db:"store_product_id"`
 }
 
 // FindByCode get product from db by code.
