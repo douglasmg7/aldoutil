@@ -19,6 +19,24 @@ var db *sql.DB
 // return nil
 // }
 
+// Store product to create a new product on store.
+type StoreProduct struct {
+	DealerName                string    `json:"dealerName"`
+	DealerProductId           string    `json:"dealerProductId"`
+	DealerProductTitle        string    `json:"dealerProductTitle"`
+	DealerProductDesc         string    `json:"DealerProductDesc"`
+	DealerProductBrand        string    `json:"DealerProductBrand"`
+	DealerProductWarrantyDays int       `json:"DealerProductWarrantyDays"`
+	DealerProductDeep         int       `json:"DealerProductDeep"`   // Deep (comprimento) in cm.
+	DealerProductHeight       int       `json:"DealerProductHeight"` // Height in cm.
+	DealerProductWidth        int       `json:"DealerProductWidth"`  // Width in cm.
+	DealerProductWeight       int       `json:"DealerProductWeight"` // Weight in grams.
+	DealerProductActive       bool      `json:"DealerProductActive"`
+	DealerProductPrice        int       `json:"DealerProductPrice"`
+	DealerProductLastUpdate   time.Time `json:"DelaerProductLastUpdate"`
+}
+
+// Aldo product.
 type Product struct {
 	Id                   int       `db:"id"`
 	Code                 string    `db:"code"`
@@ -36,7 +54,7 @@ type Product struct {
 	Height               int       `db:"height"` // mm.
 	Weight               int       `db:"weight"` // grams.
 	PictureLink          string    `db:"picture_link"`
-	WarrantyPeriod       int       `db:"warranty_period"` // Days.
+	WarrantyPeriod       int       `db:"warranty_period"` // Months.
 	RMAProcedure         string    `db:"rma_procedure"`
 	CreatedAt            time.Time `db:"created_at"`
 	ChangedAt            time.Time `db:"changed_at"`
