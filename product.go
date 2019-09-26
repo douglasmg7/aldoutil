@@ -21,25 +21,27 @@ var db *sql.DB
 
 // Store product to create a new product on store.
 type StoreProduct struct {
+	// MongodbId                 string    `json:"_id"` // Identify product into store site using mongo _id.
 	DealerName                string    `json:"dealerName"`
 	DealerProductId           string    `json:"dealerProductId"`
 	DealerProductTitle        string    `json:"dealerProductTitle"`
-	DealerProductDesc         string    `json:"DealerProductDesc"`
-	DealerProductBrand        string    `json:"DealerProductBrand"`
-	DealerProductWarrantyDays int       `json:"DealerProductWarrantyDays"`
-	DealerProductDeep         int       `json:"DealerProductDeep"`   // Deep (comprimento) in cm.
-	DealerProductHeight       int       `json:"DealerProductHeight"` // Height in cm.
-	DealerProductWidth        int       `json:"DealerProductWidth"`  // Width in cm.
-	DealerProductWeight       int       `json:"DealerProductWeight"` // Weight in grams.
-	DealerProductActive       bool      `json:"DealerProductActive"`
-	DealerProductPrice        int       `json:"DealerProductPrice"`
-	DealerProductLastUpdate   time.Time `json:"DelaerProductLastUpdate"`
+	DealerProductDesc         string    `json:"dealerProductDesc"`
+	DealerProductBrand        string    `json:"dealerProductBrand"`
+	DealerProductWarrantyDays int       `json:"dealerProductWarrantyDays"`
+	DealerProductDeep         int       `json:"dealerProductDeep"`   // Deep (comprimento) in cm.
+	DealerProductHeight       int       `json:"dealerProductHeight"` // Height in cm.
+	DealerProductWidth        int       `json:"dealerProductWidth"`  // Width in cm.
+	DealerProductWeight       int       `json:"dealerProductWeight"` // Weight in grams.
+	DealerProductActive       bool      `json:"dealerProductActive"`
+	DealerProductPrice        int       `json:"dealerProductPrice"`
+	DealerProductLastUpdate   time.Time `json:"dealerProductLastUpdate"`
 }
 
 // Aldo product.
 type Product struct {
-	Id                   int       `db:"id"`
-	Code                 string    `db:"code"`
+	Id                   int       `db:"id"`        // Internal id.
+	MongodbId            string    `db:"mongodbId"` // Store id from mongodb.
+	Code                 string    `db:"code"`      // From dealer.
 	Brand                string    `db:"brand"`
 	Category             string    `db:"category"`
 	Description          string    `db:"description"`
