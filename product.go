@@ -26,7 +26,8 @@ type StoreProduct struct {
 	DealerProductId           string    `json:"dealerProductId"`
 	DealerProductTitle        string    `json:"dealerProductTitle"`
 	DealerProductDesc         string    `json:"dealerProductDesc"`
-	DealerProductBrand        string    `json:"dealerProductBrand"`
+	DealerProductMaker        string    `json:"dealerProductMaker"`
+	DealerProductCategory     string    `json:"dealerProductCategory"`
 	DealerProductWarrantyDays int       `json:"dealerProductWarrantyDays"`
 	DealerProductDeep         int       `json:"dealerProductDeep"`   // Deep (comprimento) in cm.
 	DealerProductHeight       int       `json:"dealerProductHeight"` // Height in cm.
