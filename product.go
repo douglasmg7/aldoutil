@@ -6,6 +6,8 @@ import (
 	"reflect"
 	"strings"
 	"time"
+
+	"github.com/douglasmg7/currency"
 )
 
 var db *sql.DB
@@ -40,31 +42,31 @@ type StoreProduct struct {
 
 // Aldo product.
 type Product struct {
-	Id                   int       `db:"id"`        // Internal id.
-	MongodbId            string    `db:"mongodbId"` // Store id from mongodb.
-	Code                 string    `db:"code"`      // From dealer.
-	Brand                string    `db:"brand"`
-	Category             string    `db:"category"`
-	Description          string    `db:"description"`
-	Unit                 string    `db:"unit"`
-	Multiple             int       `db:"multiple"`
-	DealerPrice          int       `db:"dealer_price"`
-	SuggestionPrice      int       `db:"suggestion_price"`
-	TechnicalDescription string    `db:"technical_description"`
-	Availability         bool      `db:"availability"`
-	Length               int       `db:"length"` // mm.
-	Width                int       `db:"width"`  // mm.
-	Height               int       `db:"height"` // mm.
-	Weight               int       `db:"weight"` // grams.
-	PictureLink          string    `db:"picture_link"`
-	WarrantyPeriod       int       `db:"warranty_period"` // Months.
-	RMAProcedure         string    `db:"rma_procedure"`
-	CreatedAt            time.Time `db:"created_at"`
-	ChangedAt            time.Time `db:"changed_at"`
-	Changed              bool      `db:"changed"`
-	New                  bool      `db:"new"`
-	Removed              bool      `db:"removed"`
-	StoreProductId       bool      `db:"store_product_id"`
+	Id                   int               `db:"id"`        // Internal id.
+	MongodbId            string            `db:"mongodbId"` // Store id from mongodb.
+	Code                 string            `db:"code"`      // From dealer.
+	Brand                string            `db:"brand"`
+	Category             string            `db:"category"`
+	Description          string            `db:"description"`
+	Unit                 string            `db:"unit"`
+	Multiple             int               `db:"multiple"`
+	DealerPrice          currency.Currency `db:"dealer_price"`
+	SuggestionPrice      currency.Currency `db:"suggestion_price"`
+	TechnicalDescription string            `db:"technical_description"`
+	Availability         bool              `db:"availability"`
+	Length               int               `db:"length"` // mm.
+	Width                int               `db:"width"`  // mm.
+	Height               int               `db:"height"` // mm.
+	Weight               int               `db:"weight"` // grams.
+	PictureLink          string            `db:"picture_link"`
+	WarrantyPeriod       int               `db:"warranty_period"` // Months.
+	RMAProcedure         string            `db:"rma_procedure"`
+	CreatedAt            time.Time         `db:"created_at"`
+	ChangedAt            time.Time         `db:"changed_at"`
+	Changed              bool              `db:"changed"`
+	New                  bool              `db:"new"`
+	Removed              bool              `db:"removed"`
+	StoreProductId       bool              `db:"store_product_id"`
 }
 
 // FindByCode get product from db by code.
