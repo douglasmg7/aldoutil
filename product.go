@@ -54,9 +54,9 @@ type Product struct {
 	SuggestionPrice      currency.Currency `db:"suggestion_price"`
 	TechnicalDescription string            `db:"technical_description"`
 	Availability         bool              `db:"availability"`
-	Length               int               `db:"length"` // mm.
-	Width                int               `db:"width"`  // mm.
-	Height               int               `db:"height"` // mm.
+	Length               int               `db:"length"` // cm.
+	Width                int               `db:"width"`  // cm.
+	Height               int               `db:"height"` // cm.
 	Weight               int               `db:"weight"` // grams.
 	PictureLink          string            `db:"picture_link"`
 	WarrantyPeriod       int               `db:"warranty_period"` // Months.
