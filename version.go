@@ -1,5 +1,5 @@
 package aldoutil
 
 const (
-	version string = "0.2.3"
+	version string = "0.3.0"
 )

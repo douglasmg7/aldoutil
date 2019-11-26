@@ -10,6 +10,14 @@ import (
 	"strings"
 )
 
+// Aldo product.
+type Category struct {
+	Name        string `db:"name"`
+	Text        string `db:"text"`
+	ProductsQty int    `db:"productsQty"`
+	Selected    bool   `db:"selected"`
+}
+
 //  ReadCategoryList read list, lowercase, remove spaces and create a list of lines.
 func ReadCategoryList(fileName string) []string {
 	b, err := ioutil.ReadFile(fileName)
