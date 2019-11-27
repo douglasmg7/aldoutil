@@ -2,12 +2,12 @@
 
 
 [[projects]]
-  branch = "master"
-  digest = "1:b13fc569a6298f4c09a91707c30e0398bf336362ce355782700daae72c036eeb"
+  digest = "1:f316c463622cf004e0dc736cc373a571dae2474b5df79e41260f7e00985d7d61"
   name = "github.com/douglasmg7/currency"
   packages = ["."]
   pruneopts = "UT"
-  revision = "f372ba5a7db608d7b1e929d11e2081b01fac7bd2"
+  revision = "cc0dd53259a78351c5ddfa60fc4d09de1c62e0bb"
+  version = "v0.1.0"
 
 [solve-meta]
   analyzer-name = "dep"
