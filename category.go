@@ -14,7 +14,7 @@ import (
 type Category struct {
 	Name        string `db:"name"`
 	Text        string `db:"text"`
-	ProductsQty int    `db:"productsQty"`
+	ProductsQty int    `db:"products_qty"`
 	Selected    bool   `db:"selected"`
 }
 

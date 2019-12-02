@@ -42,9 +42,9 @@ type StoreProduct struct {
 
 // Aldo product.
 type Product struct {
-	Id                   int               `db:"id"`        // Internal id.
-	MongodbId            string            `db:"mongodbId"` // Store id from mongodb.
-	Code                 string            `db:"code"`      // From dealer.
+	Id                   int               `db:"id"`         // Internal id.
+	MongodbId            string            `db:"mongodb_id"` // Store id from mongodb.
+	Code                 string            `db:"code"`       // From dealer.
 	Brand                string            `db:"brand"`
 	Category             string            `db:"category"`
 	Description          string            `db:"description"`
