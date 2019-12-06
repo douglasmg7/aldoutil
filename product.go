@@ -3,11 +3,10 @@ package aldoutil
 import (
 	"bytes"
 	"database/sql"
+	"github.com/douglasmg7/currency"
 	"reflect"
 	"strings"
 	"time"
-
-	"github.com/douglasmg7/currency"
 )
 
 var db *sql.DB
@@ -24,20 +23,21 @@ var db *sql.DB
 // Store product to create a new product on store.
 type StoreProduct struct {
 	// MongodbId                 string    `json:"_id"` // Identify product into store site using mongo _id.
-	DealerName                string    `json:"dealerName"`
-	DealerProductId           string    `json:"dealerProductId"`
-	DealerProductTitle        string    `json:"dealerProductTitle"`
-	DealerProductDesc         string    `json:"dealerProductDesc"`
-	DealerProductMaker        string    `json:"dealerProductMaker"`
-	DealerProductCategory     string    `json:"dealerProductCategory"`
-	DealerProductWarrantyDays int       `json:"dealerProductWarrantyDays"`
-	DealerProductDeep         int       `json:"dealerProductDeep"`   // Deep (comprimento) in cm.
-	DealerProductHeight       int       `json:"dealerProductHeight"` // Height in cm.
-	DealerProductWidth        int       `json:"dealerProductWidth"`  // Width in cm.
-	DealerProductWeight       int       `json:"dealerProductWeight"` // Weight in grams.
-	DealerProductActive       bool      `json:"dealerProductActive"`
-	DealerProductPrice        int       `json:"dealerProductPrice"`
-	DealerProductLastUpdate   time.Time `json:"dealerProductLastUpdate"`
+	DealerName                        string    `json:"dealerName"`
+	DealerProductId                   string    `json:"dealerProductId"`
+	DealerProductTitle                string    `json:"dealerProductTitle"`
+	DealerProductDesc                 string    `json:"dealerProductDesc"`
+	DealerProductMaker                string    `json:"dealerProductMaker"`
+	DealerProductCategory             string    `json:"dealerProductCategory"`
+	DealerProductWarrantyDays         int       `json:"dealerProductWarrantyDays"`
+	DealerProductDeep                 int       `json:"dealerProductDeep"`   // Deep (comprimento) in cm.
+	DealerProductHeight               int       `json:"dealerProductHeight"` // Height in cm.
+	DealerProductWidth                int       `json:"dealerProductWidth"`  // Width in cm.
+	DealerProductWeight               int       `json:"dealerProductWeight"` // Weight in grams.
+	DealerProductActive               bool      `json:"dealerProductActive"`
+	DealerProductFinalPriceSuggestion int       `json:"dealerProductFinalPriceSuggestion"`
+	DealerProductPrice                int       `json:"dealerProductPrice"`
+	DealerProductLastUpdate           time.Time `json:"dealerProductLastUpdate"`
 }
 
 // Aldo product.
@@ -48,8 +48,6 @@ type Product struct {
 	Brand                string            `db:"brand"`
 	Category             string            `db:"category"`
 	Description          string            `db:"description"`
-	Unit                 string            `db:"unit"`
-	Multiple             int               `db:"multiple"`
 	DealerPrice          currency.Currency `db:"dealer_price"`
 	SuggestionPrice      currency.Currency `db:"suggestion_price"`
 	TechnicalDescription string            `db:"technical_description"`
@@ -139,7 +137,7 @@ func findAllProducts(db *sql.DB, history bool) (products []Product, err error) {
 	buffer.WriteString(strings.Join(fieldsNameDb, ", "))
 	buffer.WriteString(" FROM ")
 	buffer.WriteString(tableName)
-	buffer.WriteString(" LIMIT 10")
+	// buffer.WriteString(" LIMIT 10")
 
 	rows, err := db.Query(buffer.String())
 	if err != nil {
@@ -262,12 +260,12 @@ func (p *Product) Diff(pn *Product) bool {
 	if p.Description != pn.Description {
 		return true
 	}
-	if p.Unit != pn.Unit {
-		return true
-	}
-	if p.Multiple != pn.Multiple {
-		return true
-	}
+	// if p.Unit != pn.Unit {
+	// return true
+	// }
+	// if p.Multiple != pn.Multiple {
+	// return true
+	// }
 	if p.DealerPrice != pn.DealerPrice {
 		return true
 	}
