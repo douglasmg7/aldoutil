@@ -38,6 +38,7 @@ type StoreProduct struct {
 	DealerProductFinalPriceSuggestion int       `json:"dealerProductFinalPriceSuggestion"`
 	DealerProductPrice                int       `json:"dealerProductPrice"`
 	DealerProductLastUpdate           time.Time `json:"dealerProductLastUpdate"`
+	DealerProductImagesLink           string    `json:"dealerProductImagesLink"` // Images link separated by "__,__".
 }
 
 // Aldo product.
