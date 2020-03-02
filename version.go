@@ -1,7 +1,8 @@
 package aldoutil
 
 const (
-	version string = "0.5.0"
+	// Remove sql code.
+	version string = "0.6.0"
 )
 
 /*

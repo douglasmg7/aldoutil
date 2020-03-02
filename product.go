@@ -1,12 +1,10 @@
 package aldoutil
 
 import (
-	"bytes"
 	"database/sql"
-	"github.com/douglasmg7/currency"
-	"reflect"
-	"strings"
 	"time"
+
+	"github.com/douglasmg7/currency"
 )
 
 var db *sql.DB
@@ -43,7 +41,6 @@ type StoreProduct struct {
 
 // Aldo product.
 type Product struct {
-	Id                   int               `db:"id"`         // Internal id.
 	MongodbId            string            `db:"mongodb_id"` // Store id from mongodb.
 	Code                 string            `db:"code"`       // From dealer.
 	Brand                string            `db:"brand"`
@@ -68,184 +65,181 @@ type Product struct {
 	StoreProductId       bool              `db:"store_product_id"`
 }
 
-// FindByCode get product from db by code.
-func (p *Product) FindByCode(db *sql.DB, code string) error {
-	return p.findByCode(db, code, false)
-}
+// // FindByCode get product from db by code.
+// func (p *Product) FindByCode(db *sql.DB, code string) error {
+// return p.findByCode(db, code, false)
+// }
 
-// FindHistoryByCode get product history from db by code.
-func (p *Product) FindHistoryByCode(db *sql.DB, code string) error {
-	return p.findByCode(db, code, true)
-}
+// // FindHistoryByCode get product history from db by code.
+// func (p *Product) FindHistoryByCode(db *sql.DB, code string) error {
+// return p.findByCode(db, code, true)
+// }
 
-// findByCode get product or product history from db by code.
-func (p *Product) findByCode(db *sql.DB, code string, history bool) error {
-	var fieldsName []string
-	var fieldsNameDb []string
-	var fieldsInterface []interface{}
-	// Table name.
-	var tableName = "product"
-	if history {
-		tableName = "product_history"
-	}
+// // findByCode get product or product history from db by code.
+// func (p *Product) findByCode(db *sql.DB, code string, history bool) error {
+// var fieldsName []string
+// var fieldsNameDb []string
+// var fieldsInterface []interface{}
+// // Table name.
+// var tableName = "product"
+// if history {
+// tableName = "product_history"
+// }
 
-	val := reflect.ValueOf(p).Elem()
-	for i := 0; i < val.NumField(); i++ {
-		fieldType := val.Type().Field(i)
-		fieldsName = append(fieldsName, fieldType.Name)
-		fieldsNameDb = append(fieldsNameDb, fieldType.Tag.Get("db"))
-		fieldsInterface = append(fieldsInterface, val.Field(i).Addr().Interface())
-	}
-	var buffer bytes.Buffer
-	buffer.WriteString("SELECT ")
-	buffer.WriteString(strings.Join(fieldsNameDb, ", "))
-	buffer.WriteString(" FROM ")
-	buffer.WriteString(tableName)
-	buffer.WriteString(" WHERE code=?")
+// val := reflect.ValueOf(p).Elem()
+// for i := 0; i < val.NumField(); i++ {
+// fieldType := val.Type().Field(i)
+// fieldsName = append(fieldsName, fieldType.Name)
+// fieldsNameDb = append(fieldsNameDb, fieldType.Tag.Get("db"))
+// fieldsInterface = append(fieldsInterface, val.Field(i).Addr().Interface())
+// }
+// var buffer bytes.Buffer
+// buffer.WriteString("SELECT ")
+// buffer.WriteString(strings.Join(fieldsNameDb, ", "))
+// buffer.WriteString(" FROM ")
+// buffer.WriteString(tableName)
+// buffer.WriteString(" WHERE code=?")
 
-	err := db.QueryRow(buffer.String(), code).Scan(fieldsInterface...)
-	return err
-}
+// err := db.QueryRow(buffer.String(), code).Scan(fieldsInterface...)
+// return err
+// }
 
-func FindAllProducts(db *sql.DB) ([]Product, error) {
-	return findAllProducts(db, false)
-}
+// func FindAllProducts(db *sql.DB) ([]Product, error) {
+// return findAllProducts(db, false)
+// }
 
-func FindAllProductsHistory(db *sql.DB) ([]Product, error) {
-	return findAllProducts(db, true)
-}
+// func FindAllProductsHistory(db *sql.DB) ([]Product, error) {
+// return findAllProducts(db, true)
+// }
 
-func findAllProducts(db *sql.DB, history bool) (products []Product, err error) {
-	p := &Product{}
-	var fieldsName []string
-	var fieldsNameDb []string
-	var fieldsInterface []interface{}
-	// Table name.
-	var tableName = "product"
-	if history {
-		tableName = "product_history"
-	}
+// func findAllProducts(db *sql.DB, history bool) (products []Product, err error) {
+// p := &Product{}
+// var fieldsName []string
+// var fieldsNameDb []string
+// var fieldsInterface []interface{}
+// // Table name.
+// var tableName = "product"
+// if history {
+// tableName = "product_history"
+// }
 
-	val := reflect.ValueOf(p).Elem()
-	for i := 0; i < val.NumField(); i++ {
-		fieldType := val.Type().Field(i)
-		fieldsName = append(fieldsName, fieldType.Name)
-		fieldsNameDb = append(fieldsNameDb, fieldType.Tag.Get("db"))
-		fieldsInterface = append(fieldsInterface, val.Field(i).Addr().Interface())
-	}
-	var buffer bytes.Buffer
-	buffer.WriteString("SELECT ")
-	buffer.WriteString(strings.Join(fieldsNameDb, ", "))
-	buffer.WriteString(" FROM ")
-	buffer.WriteString(tableName)
-	// buffer.WriteString(" LIMIT 10")
+// val := reflect.ValueOf(p).Elem()
+// for i := 0; i < val.NumField(); i++ {
+// fieldType := val.Type().Field(i)
+// fieldsName = append(fieldsName, fieldType.Name)
+// fieldsNameDb = append(fieldsNameDb, fieldType.Tag.Get("db"))
+// fieldsInterface = append(fieldsInterface, val.Field(i).Addr().Interface())
+// }
+// var buffer bytes.Buffer
+// buffer.WriteString("SELECT ")
+// buffer.WriteString(strings.Join(fieldsNameDb, ", "))
+// buffer.WriteString(" FROM ")
+// buffer.WriteString(tableName)
+// // buffer.WriteString(" LIMIT 10")
 
-	rows, err := db.Query(buffer.String())
-	if err != nil {
-		return
-	}
-	defer rows.Close()
-	for rows.Next() {
-		product := Product{}
-		fieldsInterfaceRes := []interface{}{}
-		val := reflect.ValueOf(product).Elem()
-		for i := 0; i < val.NumField(); i++ {
-			fieldsInterfaceRes = append(fieldsInterfaceRes, val.Field(i).Addr().Interface())
-		}
-		err = rows.Scan(fieldsInterface...)
-		if err != nil {
-			return
-		}
-		products = append(products, product)
-	}
-	return
-}
+// rows, err := db.Query(buffer.String())
+// if err != nil {
+// return
+// }
+// defer rows.Close()
+// for rows.Next() {
+// product := Product{}
+// fieldsInterfaceRes := []interface{}{}
+// val := reflect.ValueOf(product).Elem()
+// for i := 0; i < val.NumField(); i++ {
+// fieldsInterfaceRes = append(fieldsInterfaceRes, val.Field(i).Addr().Interface())
+// }
+// err = rows.Scan(fieldsInterface...)
+// if err != nil {
+// return
+// }
+// products = append(products, product)
+// }
+// return
+// }
 
-// Save product to db.
-func (p *Product) Save(db *sql.DB) error {
-	return p.save(db, false)
-}
+// // Save product to db.
+// func (p *Product) Save(db *sql.DB) error {
+// return p.save(db, false)
+// }
 
-// Save product history to db.
-func (p *Product) SaveHistory(db *sql.DB) error {
-	return p.save(db, true)
-}
+// // Save product history to db.
+// func (p *Product) SaveHistory(db *sql.DB) error {
+// return p.save(db, true)
+// }
 
-// Save  product or product history to db.
-func (p *Product) save(db *sql.DB, history bool) error {
-	var fieldsName []string
-	var fieldsNameDb []string
-	var fieldsInterface []interface{}
-	// Table name.
-	var tableName = "product"
-	if history {
-		tableName = "product_history"
-	}
+// // Save  product or product history to db.
+// func (p *Product) save(db *sql.DB, history bool) error {
+// var fieldsName []string
+// var fieldsNameDb []string
+// var fieldsInterface []interface{}
+// // Table name.
+// var tableName = "product"
+// if history {
+// tableName = "product_history"
+// }
 
-	val := reflect.ValueOf(p).Elem()
-	// i=1, let db generate id.
-	for i := 1; i < val.NumField(); i++ {
-		fieldType := val.Type().Field(i)
-		fieldsName = append(fieldsName, fieldType.Name)
-		fieldsNameDb = append(fieldsNameDb, fieldType.Tag.Get("db"))
-		fieldsInterface = append(fieldsInterface, val.Field(i).Addr().Interface())
-	}
-	var buffer bytes.Buffer
-	buffer.WriteString("INSERT INTO ")
-	buffer.WriteString(tableName)
-	buffer.WriteString(` (`)
-	buffer.WriteString(strings.Join(fieldsNameDb, ", "))
-	buffer.WriteString(`) VALUES(?`)
-	buffer.WriteString(strings.Repeat(`, ?`, len(fieldsNameDb)-1))
-	buffer.WriteString(`)`)
+// val := reflect.ValueOf(p).Elem()
+// for i := 0; i < val.NumField(); i++ {
+// fieldType := val.Type().Field(i)
+// fieldsName = append(fieldsName, fieldType.Name)
+// fieldsNameDb = append(fieldsNameDb, fieldType.Tag.Get("db"))
+// fieldsInterface = append(fieldsInterface, val.Field(i).Addr().Interface())
+// }
+// var buffer bytes.Buffer
+// buffer.WriteString("INSERT INTO ")
+// buffer.WriteString(tableName)
+// buffer.WriteString(` (`)
+// buffer.WriteString(strings.Join(fieldsNameDb, ", "))
+// buffer.WriteString(`) VALUES(?`)
+// buffer.WriteString(strings.Repeat(`, ?`, len(fieldsNameDb)-1))
+// buffer.WriteString(`)`)
 
-	stmt, err := db.Prepare(buffer.String())
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-	_, err = stmt.Exec(fieldsInterface...)
-	return err
-}
+// stmt, err := db.Prepare(buffer.String())
+// if err != nil {
+// return err
+// }
+// defer stmt.Close()
+// _, err = stmt.Exec(fieldsInterface...)
+// return err
+// }
 
-// Update product from db.
-func (p *Product) Update(db *sql.DB) error {
-	return p.update(db, false)
-}
+// // Update product from db.
+// func (p *Product) Update(db *sql.DB) error {
+// return p.update(db, false)
+// }
 
-// UpdateHistory update product history db.
-func (p *Product) UpdateHistory(db *sql.DB) error {
-	return p.update(db, true)
-}
+// // UpdateHistory update product history db.
+// func (p *Product) UpdateHistory(db *sql.DB) error {
+// return p.update(db, true)
+// }
 
-// Update product or product history db.
-func (p *Product) update(db *sql.DB, history bool) error {
-	var fieldsNameSet []string
-	// var fieldsNameDb []string
-	var fieldsInterface []interface{}
-	// Table name.
-	var tableName = "product"
-	if history {
-		tableName = "product_history"
-	}
+// // Update product or product history db.
+// func (p *Product) update(db *sql.DB, history bool) error {
+// var fieldsNameSet []string
+// // var fieldsNameDb []string
+// var fieldsInterface []interface{}
+// // Table name.
+// var tableName = "product"
+// if history {
+// tableName = "product_history"
+// }
 
-	val := reflect.ValueOf(p).Elem()
-	// i=1, to not update id.
-	for i := 1; i < val.NumField(); i++ {
-		fieldType := val.Type().Field(i)
-		// fieldsName = append(fieldsName, fieldType.Name)
-		fieldsNameSet = append(fieldsNameSet, fieldType.Tag.Get("db")+"=?")
-		fieldsInterface = append(fieldsInterface, val.Field(i).Addr().Interface())
-	}
-	fieldsInterface = append(fieldsInterface, p.Id)
+// val := reflect.ValueOf(p).Elem()
+// for i := 0; i < val.NumField(); i++ {
+// fieldType := val.Type().Field(i)
+// // fieldsName = append(fieldsName, fieldType.Name)
+// fieldsNameSet = append(fieldsNameSet, fieldType.Tag.Get("db")+"=?")
+// fieldsInterface = append(fieldsInterface, val.Field(i).Addr().Interface())
+// }
 
-	query := "UPDATE " + tableName + " SET " + strings.Join(fieldsNameSet, ", ") + " WHERE id=?"
-	// fmt.Println(query)
-	// fmt.Println("brand:", p.Brand)
+// query := "UPDATE " + tableName + " SET " + strings.Join(fieldsNameSet, ", ") + " WHERE id=?"
+// // fmt.Println(query)
+// // fmt.Println("brand:", p.Brand)
 
-	_, err := db.Exec(query, fieldsInterface...)
-	return err
-}
+// _, err := db.Exec(query, fieldsInterface...)
+// return err
+// }
 
 // Diff check if products are different.
 func (p *Product) Diff(pn *Product) bool {
