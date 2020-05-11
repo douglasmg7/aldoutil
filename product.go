@@ -65,6 +65,20 @@ type Product struct {
 	StoreProductId       bool              `db:"store_product_id"`
 }
 
+// Define product status.
+func (p *Product) Status(validDate time.Time) string {
+	if p.ChangedAt.Equal(p.CreatedAt) {
+		if p.ChangedAt.Before(validDate) {
+			return "new"
+		}
+	} else {
+		if p.ChangedAt.Before(validDate) {
+			return "changed"
+		}
+	}
+	return ""
+}
+
 // // FindByCode get product from db by code.
 // func (p *Product) FindByCode(db *sql.DB, code string) error {
 // return p.findByCode(db, code, false)
