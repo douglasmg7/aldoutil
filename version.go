@@ -1,7 +1,7 @@
 package aldoutil
 
 const (
-	version string = "0.6.1"
+	version string = "1.0.1"
 	// Product have a method to define status.
 
 	// // Remove sql code.
