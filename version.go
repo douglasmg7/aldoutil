@@ -1,8 +1,11 @@
 package aldoutil
 
 const (
-	version string = "1.0.1"
-	// Product have a method to define status.
+	version string = "1.0.2"
+	// Bugfix -Product status method.
+
+	// version string = "1.0.1"
+	// // Product have a method to define status.
 
 	// // Remove sql code.
 	// version string = "0.6.0"
