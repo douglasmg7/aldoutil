@@ -1,8 +1,11 @@
 package aldoutil
 
 const (
-	version string = "1.0.3"
-	// Bugfix - Not show status product as new for products created at zunka site.
+	version string = "1.0.4"
+	// Included options on status (unavailable, removed).
+
+	// version string = "1.0.3"
+	// // Bugfix - Not show status product as new for products created at zunka site.
 
 	// version string = "1.0.2"
 	// // Bugfix - Product status method.

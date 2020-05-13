@@ -67,6 +67,12 @@ type Product struct {
 
 // Define product status.
 func (p *Product) Status(validDate time.Time) string {
+	if !p.Availability {
+		return "unavailable"
+	}
+	if p.Removed {
+		return "removed"
+	}
 	if p.ChangedAt.Before(validDate) {
 		return ""
 	} else {
