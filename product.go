@@ -71,7 +71,11 @@ func (p *Product) Status(validDate time.Time) string {
 		return ""
 	} else {
 		if p.ChangedAt.Equal(p.CreatedAt) {
-			return "new"
+			if p.MongodbId == "" {
+				return "new"
+			}
+			// Product alredy created at zunka site.
+			return ""
 		} else {
 			return "changed"
 		}
