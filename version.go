@@ -1,8 +1,11 @@
 package aldoutil
 
 const (
-	version string = "1.0.5"
-	// Bugfix - 'removed' status has prority over 'unavaiable'.
+	version string = "1.1.0"
+	// Using new data base (removed fields "new", "changed" and "removed", added fields "removedAt", "StatusCleanedAt").
+
+	// version string = "1.0.5"
+	// // Bugfix - 'removed' status has prority over 'unavaiable'.
 
 	// version string = "1.0.4"
 	// // Included options on status (unavailable, removed).

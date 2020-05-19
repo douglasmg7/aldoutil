@@ -2,9 +2,8 @@ package aldoutil
 
 import (
 	"database/sql"
-	"time"
-
 	"github.com/douglasmg7/currency"
+	"time"
 )
 
 var db *sql.DB
@@ -43,6 +42,7 @@ type StoreProduct struct {
 type Product struct {
 	MongodbId            string            `db:"mongodb_id"` // Store id from mongodb.
 	Code                 string            `db:"code"`       // From dealer.
+	StoreProductId       bool              `db:"store_product_id"`
 	Brand                string            `db:"brand"`
 	Category             string            `db:"category"`
 	Description          string            `db:"description"`
@@ -59,32 +59,31 @@ type Product struct {
 	RMAProcedure         string            `db:"rma_procedure"`
 	CreatedAt            time.Time         `db:"created_at"`
 	ChangedAt            time.Time         `db:"changed_at"`
-	Changed              bool              `db:"changed"`
-	New                  bool              `db:"new"`
-	Removed              bool              `db:"removed"`
-	StoreProductId       bool              `db:"store_product_id"`
+	RemovedAt            time.Time         `db:"removed_at"`
+	StatusCleanedAt      time.Time         `db:"status_cleaned_at"`
 }
 
 // Define product status.
 func (p *Product) Status(validDate time.Time) string {
-	if p.Removed {
+	if !p.RemovedAt.IsZero() {
 		return "removed"
 	}
 	if !p.Availability {
 		return "unavailable"
 	}
-	if p.ChangedAt.Before(validDate) {
+	// Status have a valid time for not created products at zunkasite.
+	if p.MongodbId == "" && p.ChangedAt.Before(validDate) {
 		return ""
+	}
+	// For created products at zunkasite, only clean status by user.
+	if !p.StatusCleanedAt.IsZero() && p.StatusCleanedAt.After(p.ChangedAt) {
+		return ""
+	}
+	// New.
+	if p.ChangedAt.Equal(p.CreatedAt) {
+		return "new"
 	} else {
-		if p.ChangedAt.Equal(p.CreatedAt) {
-			if p.MongodbId == "" {
-				return "new"
-			}
-			// Product alredy created at zunka site.
-			return ""
-		} else {
-			return "changed"
-		}
+		return "changed"
 	}
 }
 
