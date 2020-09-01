@@ -36,6 +36,7 @@ type StoreProduct struct {
 	DealerProductPrice                int       `json:"dealerProductPrice"`
 	DealerProductLastUpdate           time.Time `json:"dealerProductLastUpdate"`
 	DealerProductImagesLink           string    `json:"dealerProductImagesLink"` // Images link separated by "__,__".
+	StoreProductQtd                   int       `json:"storeProductQtd"`
 }
 
 // Aldo product.
