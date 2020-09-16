@@ -1,8 +1,11 @@
 package aldoutil
 
 const (
-	version string = "1.3.0"
-	// Added field ean on store product.
+	version string = "1.3.1"
+	// Added field DealerProductLocation on store product.
+
+	// version string = "1.3.0"
+	// // Added field ean on store product.
 
 	// version string = "1.2.0"
 	// // Added field storeProductQtd on store product.
